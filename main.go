@@ -1,12 +1,14 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"github.com/asticode/go-astikit"
 	"github.com/asticode/go-astilectron"
 	bootstrap "github.com/asticode/go-astilectron-bootstrap"
 	"log"
+	"time"
 )
 
 // Constants
@@ -49,23 +51,50 @@ func main() {
 		Logger: l,
 
 		MenuOptions: []*astilectron.MenuItemOptions{{
-			Label: astilectron.StrPtr("File"),
+			Label: astikit.StrPtr("File"),
 			SubMenu: []*astilectron.MenuItemOptions{
-				{Label: astilectron.StrPtr("About")},
+				{
+					Label: astikit.StrPtr("About"),
+					OnClick: func(e astilectron.Event) (deleteListener bool) {
+						if err := bootstrap.SendMessage(w, "about", htmlAbout, func(m *bootstrap.MessageIn) {
+							var s string
+							if err := json.Unmarshal(m.Payload, &s); err != nil {
+								l.Println(fmt.Errorf("unmarshaling payload failed: %w", err))
+								return
+							}
+							l.Printf("About modal has been displayed and payload is %s!\n", s)
+						}); err != nil {
+							l.Println(fmt.Errorf("sending about event failed: %w\n", err))
+						}
+						return
+					},
+				},
 				{Role: astilectron.MenuItemRoleClose},
 			},
 		}},
-		OnWait: func(_ *astilectron.Astilectron, iw *astilectron.Window, _ astilectron.Menu, _ *astilectron.Tray, _ *astilectron.Menu) error {
-			w = iw
+		OnWait: func(_ *astilectron.Astilectron, ws []*astilectron.Window, _ *astilectron.Menu, _ *astilectron.Tray, _ *astilectron.Menu) error {
+			w = ws[0]
+			go func() {
+				time.Sleep(5 * time.Second)
+				if err := bootstrap.SendMessage(w, "check.out.menu", "checkout??"); err != nil {
+					l.Println(fmt.Errorf("sending checkout menu event failed: %w\n", err))
+				}
+			}()
 			return nil
 		},
-		WindowOptions: &astilectron.WindowOptions{
-			BackgroundColor: astilectron.StrPtr("#333"),
-			Center:          astilectron.PtrBool(true),
-			Height:          astilectron.PtrInt(700),
-			Width:           astilectron.PtrInt(700),
-		},
+		RestoreAssets: RestoreAssets,
+
+		Windows: []*bootstrap.Window{{
+			Homepage:       "index.html",
+			MessageHandler: handleMessages,
+			Options: &astilectron.WindowOptions{
+				BackgroundColor: astikit.StrPtr("#333"),
+				Center:          astikit.BoolPtr(true),
+				Height:          astikit.IntPtr(700),
+				Width:           astikit.IntPtr(700),
+			},
+		}},
 	}); err != nil {
-		fmt.Println("running bootstrap failed")
+		l.Println(fmt.Errorf("running bootstrap failed: %w", err))
 	}
 }
