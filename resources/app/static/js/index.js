@@ -3,7 +3,9 @@ let index = {
         let div = document.createElement("div");
         div.className = "Protocol";
         div.innerHTML = `<input type="radio" id="` + name + `" name="protocolchoice" value="` + name + `"><label for="` + name + `">` + name + `</label><br>`
-        div.onclick = function(){index.setChoices(name)};
+        div.onclick = function(){
+            index.setChoices(name)
+        };
         //div.onclick = function(){document.getElementById("chosenchoice").innerHTML = name};
         document.getElementById("protocol").appendChild(div);
     },
@@ -71,7 +73,7 @@ let index = {
             }
         });
     },
-    setChoices: function() {
+    setChoices: function(choice) {
         // Create message
         let message = {"name": "set"};
         message.payload = choice;
@@ -84,6 +86,7 @@ let index = {
 
         })
         document.getElementById("chosenchoice").innerHTML=choice;
+        
     },
     getChoices: function() {
         // Create message

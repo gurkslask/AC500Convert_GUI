@@ -4,11 +4,12 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"log"
+	"time"
+
 	"github.com/asticode/go-astikit"
 	"github.com/asticode/go-astilectron"
 	bootstrap "github.com/asticode/go-astilectron-bootstrap"
-	"log"
-	"time"
 )
 
 // Constants
@@ -75,7 +76,7 @@ func main() {
 		OnWait: func(_ *astilectron.Astilectron, ws []*astilectron.Window, _ *astilectron.Menu, _ *astilectron.Tray, _ *astilectron.Menu) error {
 			w = ws[0]
 			go func() {
-				time.Sleep(5 * time.Second)
+				time.Sleep(5 * time.Hour)
 				if err := bootstrap.SendMessage(w, "check.out.menu", "checkout??"); err != nil {
 					l.Println(fmt.Errorf("sending checkout menu event failed: %w\n", err))
 				}
