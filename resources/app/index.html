@@ -12,6 +12,9 @@
     <div class="left" id="dirs">
         <textarea id="data" >hej:BOOL; (* Kommentar *)\nhahah</textarea><p></p>
         <button id="senddata">Send</button>
+        <div id="protocol"></div>
+        <button id="init">init</button>
+        <span id="chosenchoice">chosen</span>
     </div>
     <div class="right">
         <div class="title"><span id="panel">panel</span></div>
@@ -28,6 +31,7 @@
     <script type="text/javascript">
         index.init();
         document.getElementById("senddata").addEventListener("click", function(){index.explore(document.getElementById("data").value)});
+        document.getElementById("init").addEventListener("click", function(){index.getChoices()});
     </script>
 </body>
 </html>

@@ -1,4 +1,12 @@
 let index = {
+    addProtocol: function(name){ 
+        let div = document.createElement("div");
+        div.className = "Protocol";
+        div.innerHTML = `<input type="radio" id="` + name + `" name="protocolchoice" value="` + name + `"><label for="` + name + `">` + name + `</label><br>`
+        div.onclick = function(){index.setChoices(name)};
+        //div.onclick = function(){document.getElementById("chosenchoice").innerHTML = name};
+        document.getElementById("protocol").appendChild(div);
+    },
     about: function(html) {
         let c = document.createElement("div");
         c.innerHTML = html;
@@ -18,6 +26,9 @@ let index = {
 
             // Explore default path
             index.explore();
+
+            // Initialise choices
+            index.getChoices();
         })
     },
     explore: function(path) {
@@ -28,7 +39,7 @@ let index = {
         if (typeof path !== "undefined") {
             message.payload = ""
         }
-        message.payload = path
+        message.payload = path;
 
         // Send message
         asticode.loader.show();
@@ -59,5 +70,35 @@ let index = {
                     break;
             }
         });
+    },
+    setChoices: function() {
+        // Create message
+        let message = {"name": "set"};
+        message.payload = choice;
+
+        // Send message
+        asticode.loader.show();
+        astilectron.sendMessage(message, function(message) {
+            // Init
+            asticode.loader.hide();
+
+        })
+        document.getElementById("chosenchoice").innerHTML=choice;
+    },
+    getChoices: function() {
+        // Create message
+        let message = {"name": "init"};
+
+        // Send message
+        asticode.loader.show();
+        astilectron.sendMessage(message, function(message) {
+            // Init
+            asticode.loader.hide();
+
+            for (let i = 0; i < message.payload.protocol.length; i++) {
+                index.addProtocol(message.payload.protocol[i]);
+            }
+
+        })
     }
 };
