@@ -32,6 +32,9 @@
         index.init();
         document.getElementById("senddata").addEventListener("click", function(){index.explore(document.getElementById("data").value)});
         document.getElementById("init").addEventListener("click", function(){index.getChoices()});
+        document.getElementById("data").addEventListener("input", function(){
+            index.explore(document.getElementById("data").value);
+            });
     </script>
 </body>
 </html>
