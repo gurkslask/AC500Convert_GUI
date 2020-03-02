@@ -4,7 +4,7 @@ let index = {
         div.className = "Protocol";
         div.innerHTML = `<input type="radio" id="` + name + `" name="protocolchoice" value="` + name + `"><label for="` + name + `">` + name + `</label><br>`
         div.onclick = function(){
-            index.setChoices(name)
+            index.setChoices(name);
         };
         //div.onclick = function(){document.getElementById("chosenchoice").innerHTML = name};
         document.getElementById("protocol").appendChild(div);
@@ -44,7 +44,7 @@ let index = {
         message.payload = path;
 
         // Send message
-        asticode.loader.show();
+        //asticode.loader.show();
         astilectron.sendMessage(message, function(message) {
             // Init
             asticode.loader.hide();

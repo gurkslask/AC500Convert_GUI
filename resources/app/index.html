@@ -32,7 +32,10 @@
         index.init();
         document.getElementById("senddata").addEventListener("click", function(){index.explore(document.getElementById("data").value)});
         document.getElementById("init").addEventListener("click", function(){index.getChoices()});
-        timer = setInterval(index.explore(document.getElementById("data").value), 500);
+
+        document.getElementById("data").addEventListener("input", function(){
+            index.explore(document.getElementById("data").value);
+            });
     </script>
 </body>
 </html>
