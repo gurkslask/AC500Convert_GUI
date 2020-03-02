@@ -1,4 +1,5 @@
 let index = {
+    plcorpanel = false,
     addProtocol: function(name){ 
         let div = document.createElement("div");
         div.className = "Protocol";
@@ -70,6 +71,17 @@ let index = {
                 case "check.out.menu":
                     asticode.notifier.info(message.payload);
                     break;
+                case "plc":
+                    plcorpanel = true;
+                    document.getElementById("access").innerHTML = plcorpanel;
+                    return {payload: "payload"};
+                    break;
+                case "panel":
+                    plcorpanel = false;
+                    document.getElementById("access").innerHTML = plcorpanel;
+                    return {payload: "payload"};
+                    break;
+
             }
         });
     },
