@@ -1,5 +1,5 @@
+var plcorpanel = false; // PLC = True, Panel = False
 let index = {
-    plcorpanel = false,
     addProtocol: function(name){ 
         let div = document.createElement("div");
         div.className = "Protocol";
@@ -56,8 +56,12 @@ let index = {
                 return
             }
             console.log(message.payload)
-            document.getElementById("access").innerHTML = message.payload.access;
-            document.getElementById("panel").innerHTML = message.payload.panel;
+            if (plcorpanel) {
+                document.getElementById("output").innerHTML = message.payload.access;
+            } else {
+                document.getElementById("output").innerHTML = message.payload.panel; 
+            }
+            //document.getElementById("panel").innerHTML = message.payload.panel;
 
         })
     },
@@ -73,12 +77,13 @@ let index = {
                     break;
                 case "plc":
                     plcorpanel = true;
+                    index.explore(document.getElementById("data").value);
                     document.getElementById("access").innerHTML = plcorpanel;
                     return {payload: "payload"};
                     break;
                 case "panel":
                     plcorpanel = false;
-                    document.getElementById("access").innerHTML = plcorpanel;
+                    index.explore(document.getElementById("data").value);
                     return {payload: "payload"};
                     break;
 
