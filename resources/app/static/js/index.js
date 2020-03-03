@@ -61,7 +61,7 @@ let index = {
             } else {
                 document.getElementById("output").innerHTML = message.payload.panel; 
             }
-            //document.getElementById("panel").innerHTML = message.payload.panel;
+            //document.getElementById("output").innerHTML = message.payload.panel;
 
         })
     },
@@ -78,12 +78,13 @@ let index = {
                 case "plc":
                     plcorpanel = true;
                     index.explore(document.getElementById("data").value);
-                    document.getElementById("access").innerHTML = plcorpanel;
+                    document.getElementById("output").innerHTML = plcorpanel;
                     return {payload: "payload"};
                     break;
                 case "panel":
                     plcorpanel = false;
                     index.explore(document.getElementById("data").value);
+                    document.getElementById("output").innerHTML = plcorpanel;
                     return {payload: "payload"};
                     break;
 
@@ -102,7 +103,7 @@ let index = {
             asticode.loader.hide();
 
         })
-        document.getElementById("chosenchoice").innerHTML=choice;
+        //document.getElementById("chosenchoice").innerHTML=choice;
         
     },
     getChoices: function() {
@@ -120,5 +121,18 @@ let index = {
             }
 
         })
+    },
+    selectText: function (containerid) {
+        if (document.selection) { // IE
+            var range = document.body.createTextRange();
+            range.moveToElementText(document.getElementById(containerid));
+            range.select();
+        } else if (window.getSelection) {
+            var range = document.createRange();
+            range.selectNode(document.getElementById(containerid));
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            document.execCommand("copy")
+        }
     }
 };

@@ -10,13 +10,18 @@
 </head>
 <body>
     <div class="left" id="dirs">
-        <textarea id="data" >hej:BOOL; (* Kommentar *)\nhahah</textarea><p></p>
-        <button id="senddata">Send</button>
+        <textarea id="data" >
+variabel:BOOL; (* Kommentar *)
+(* BJUMP 100 *)
+variabel2:BOOL; (* Kommentar *)
+register:UINT; (* Kommentar *)
+(* RJUMP 200 *)
+register2:UINT; (* Kommentar *)
+        </textarea><p></p>
         <div id="protocol"></div>
-        <button id="init">init</button>
-        <span id="chosenchoice">chosen</span>
+        <button id=select>Copy</button>
     </div>
-    <div class="middle" id="div_access">
+    <div class="middle">
         <div class="title" ><span id="output">access</span></div>
     </div>
  
@@ -27,12 +32,11 @@
     <script src="static/lib/chart/chart.min.js"></script>
     <script type="text/javascript">
         index.init();
-        document.getElementById("senddata").addEventListener("click", function(){index.explore(document.getElementById("data").value)});
-        document.getElementById("init").addEventListener("click", function(){index.getChoices()});
-
+        //document.getElementById("senddata").addEventListener("click", function(){index.explore(document.getElementById("data").value)});
+        document.getElementById("select").addEventListener("click", function(){index.selectText("output")});
         document.getElementById("data").addEventListener("input", function(){
             index.explore(document.getElementById("data").value);
-            });
+        });
     </script>
 </body>
 </html>
