@@ -13,7 +13,8 @@ import (
 )
 
 // Constants
-const htmlAbout = `Welcome `
+const htmlAbout = `AC500 Convert is done by Alexander Svensson at Norconsult Kalmar<br>
+email: alexander.svensson2@norconsult.com`
 
 // Vars
 var (

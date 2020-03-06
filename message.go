@@ -13,13 +13,16 @@ var choice string
 
 // handleMessages handles messages
 func handleMessages(_ *astilectron.Window, m bootstrap.MessageIn) (payload interface{}, err error) {
+	// If incoming message, check Name of message and run correspinding case
 	switch m.Name {
 	case "init":
+		// Tell asti the choices of protocol
 		var ch Choices
 		ch.Protocol = []string{"COMLI", "Modbus"}
 		payload = ch
 		return
 	case "set":
+		// Asti sets chosen protocol
 		var data string
 		if len(m.Payload) > 0 {
 			// Unmarshal payload
@@ -31,6 +34,8 @@ func handleMessages(_ *astilectron.Window, m bootstrap.MessageIn) (payload inter
 		}
 
 	case "update":
+		// When textbox in asti is changed, run conversion with the chosen choice of protocol
+		// Send both panel and plc, asti chooses which one to display
 		// Unmarshal payload
 		var c Communication
 		var data string

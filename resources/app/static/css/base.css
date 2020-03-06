@@ -20,26 +20,6 @@ html, body {
     width: 40%;
 }
 
-.dir {
-    cursor: pointer;
-    padding: 3px;
-}
-
-.dir .fa {
-    margin-right: 5px;
-}
-
-.right {
-    float: right;
-    height: 100%;
-    overflow: auto;
-    padding: 15px;
-    width: 30%;
-    font-size: small;
-    background-color: #C0B283;
-
-}
-
 .middle {
     float: right;
     height: 100%;
@@ -71,9 +51,7 @@ html, body {
     font-weight: bold;
 }
 
-.chart_title {
-    margin-bottom: 5px;
-}
+
 textarea{
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
