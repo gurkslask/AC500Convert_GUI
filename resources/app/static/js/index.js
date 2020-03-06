@@ -12,6 +12,8 @@ let index = {
     },
     about: function(html) {
         // Show about page
+        imgpath = '"norconsult.png"';
+        html = html + '<br><img src=' + imgpath + 'style="width:100px;height:20px">';
         let c = document.createElement("div");
         c.innerHTML = html;
         asticode.modaler.setContent(c);
