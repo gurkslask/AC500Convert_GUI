@@ -11,3 +11,7 @@ Functionality for making jumps in addresses is accessed via writing "RJUMP XXX" 
 In the left pane resides the choice for which protocol that is chosen. Modbus and Comli are supported as of now (2020-09-09).
 
 In the top field resides the choice of what device the output is made for, either PLC code or csv format for importing to ix Developer or ABB Panel builder 800.
+
+# Version
+## 1.0
+Software is released 2020-09-09, with support for protocols comli and modbus.
