@@ -4,15 +4,17 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"log"
+	"time"
+
 	"github.com/asticode/go-astikit"
 	"github.com/asticode/go-astilectron"
 	bootstrap "github.com/asticode/go-astilectron-bootstrap"
-	"log"
-	"time"
 )
 
 // Constants
-const htmlAbout = `Welcome `
+const htmlAbout = `AC500 Convert is done by Alexander Svensson at Norconsult Kalmar<br>
+email: alexander.svensson2@norconsult.com`
 
 // Vars
 var (
@@ -42,7 +44,7 @@ func main() {
 		AstilectronOptions: astilectron.Options{
 			AppName:            AppName,
 			AppIconDarwinPath:  "resources/icon.icns",
-			AppIconDefaultPath: "resources/icon.png",
+			AppIconDefaultPath: "resources/nc.png",
 			SingleInstance:     true,
 			VersionAstilectron: VersionAstilectron,
 			VersionElectron:    VersionElectron,
@@ -50,32 +52,70 @@ func main() {
 		Debug:  *debug,
 		Logger: l,
 
-		MenuOptions: []*astilectron.MenuItemOptions{{
-			Label: astikit.StrPtr("File"),
-			SubMenu: []*astilectron.MenuItemOptions{
-				{
-					Label: astikit.StrPtr("About"),
-					OnClick: func(e astilectron.Event) (deleteListener bool) {
-						if err := bootstrap.SendMessage(w, "about", htmlAbout, func(m *bootstrap.MessageIn) {
-							var s string
-							if err := json.Unmarshal(m.Payload, &s); err != nil {
-								l.Println(fmt.Errorf("unmarshaling payload failed: %w", err))
-								return
+		MenuOptions: []*astilectron.MenuItemOptions{
+			{
+				Label: astikit.StrPtr("File"),
+				SubMenu: []*astilectron.MenuItemOptions{
+					{
+						Label: astikit.StrPtr("About"),
+						OnClick: func(e astilectron.Event) (deleteListener bool) {
+							if err := bootstrap.SendMessage(w, "about", htmlAbout, func(m *bootstrap.MessageIn) {
+								var s string
+								if err := json.Unmarshal(m.Payload, &s); err != nil {
+									l.Println(fmt.Errorf("unmarshaling payload failed: %w", err))
+									return
+								}
+								l.Printf("About modal has been displayed and payload is %s!\n", s)
+							}); err != nil {
+								l.Println(fmt.Errorf("sending about event failed: %w\n", err))
 							}
-							l.Printf("About modal has been displayed and payload is %s!\n", s)
-						}); err != nil {
-							l.Println(fmt.Errorf("sending about event failed: %w\n", err))
-						}
-						return
+							return
+						},
+					},
+					{Role: astilectron.MenuItemRoleClose},
+				}},
+			{
+				Label: astikit.StrPtr("Settings"),
+				SubMenu: []*astilectron.MenuItemOptions{
+					{
+						Label: astikit.StrPtr("PLC"),
+						OnClick: func(e astilectron.Event) (deleteListener bool) {
+							if err := bootstrap.SendMessage(w, "plc", true, func(m *bootstrap.MessageIn) {
+								var s string
+								if err := json.Unmarshal(m.Payload, &s); err != nil {
+									l.Println(fmt.Errorf("unmarshaling payload failed: %w", err))
+									return
+								}
+								l.Printf("About modal has been displayed and payload is %s!\n", s)
+							}); err != nil {
+								l.Println(fmt.Errorf("sending about event failed: %w\n", err))
+							}
+							return
+						},
+					},
+
+					{
+						Label: astikit.StrPtr("Panel"),
+						OnClick: func(e astilectron.Event) (deleteListener bool) {
+							if err := bootstrap.SendMessage(w, "panel", true, func(m *bootstrap.MessageIn) {
+								var s string
+								if err := json.Unmarshal(m.Payload, &s); err != nil {
+									l.Println(fmt.Errorf("unmarshaling payload failed: %w", err))
+									return
+								}
+								l.Printf("About modal has been displayed and payload is %s!\n", s)
+							}); err != nil {
+								l.Println(fmt.Errorf("sending about event failed: %w\n", err))
+							}
+							return
+						},
 					},
 				},
-				{Role: astilectron.MenuItemRoleClose},
-			},
-		}},
+			}},
 		OnWait: func(_ *astilectron.Astilectron, ws []*astilectron.Window, _ *astilectron.Menu, _ *astilectron.Tray, _ *astilectron.Menu) error {
 			w = ws[0]
 			go func() {
-				time.Sleep(5 * time.Second)
+				time.Sleep(5 * time.Hour)
 				if err := bootstrap.SendMessage(w, "check.out.menu", "checkout??"); err != nil {
 					l.Println(fmt.Errorf("sending checkout menu event failed: %w\n", err))
 				}
